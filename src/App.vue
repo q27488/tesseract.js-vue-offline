@@ -19,23 +19,31 @@ const worker = createWorker({
 
 export default {
   name: "app",
+  data() {
+    return {
+      haveInit: false,
+    };
+  },
   methods: {
-    recognize: async () => {
-      console.time(1)
-      const img = document.getElementById("text-img");
+    async recognize() {
+      console.time('time:');
       console.log(img);
-      await worker.load();
-      await worker.loadLanguage("chi_sim");
-      await worker.initialize("chi_sim", OEM.LSTM_ONLY);
-      await worker.setParameters({
-        tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
-      });
+      if (!this.haveInit) {
+        await worker.load();
+        await worker.loadLanguage("chi_sim");
+        await worker.initialize("chi_sim", OEM.LSTM_ONLY);
+        await worker.setParameters({
+          tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
+        });
+        this.haveInit = true;
+      }
+
+      const img = document.getElementById("text-img");
       const {
         data: { text },
       } = await worker.recognize(img);
       console.log(text);
-      console.timeEnd(1)
-
+      console.timeEnd('time:');
     },
   },
 };
