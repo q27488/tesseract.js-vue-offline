@@ -12,8 +12,8 @@ import { createWorker, PSM, OEM } from "tesseract.js";
 const path = require("path");
 const worker = createWorker({
   workerPath: "/tesseract/tesseract.js/dist/worker.min.js",
-  // langPath: "/tesseract/lang-data",  // TODO：prd环境下会报错
   corePath: "/tesseract/tesseract.js-core/tesseract-core.wasm.js",
+  langPath: "/tesseract/tesseract-lang",  // TODO：prd环境下会报错
   logger: (m) => console.log(m),
 });
 
